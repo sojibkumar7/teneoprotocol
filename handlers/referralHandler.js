@@ -30,6 +30,9 @@ async function showReferral(ctx) {
 
 async function checkReferralCompletion(ctx) {
   try {
+
+    return;
+    
     // Get the full user document for updates
     const user = await User.findById(ctx.user._id);
     if (!user) return;
