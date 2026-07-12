@@ -12,7 +12,7 @@ async function showReferral(ctx) {
       `<b>📢 Referral Program</b>\n\n` +
       `Invite friends and earn <b>${formatWithUSD(parseInt(process.env.REFERRAL_BONUS))}</b> for each!\n\n` +
       `<b>Requirements:</b>\n` +
-      `- Referred friend must complete at least 1 task\n` +
+      `- - Referred friend must join the required Telegram channel\n` +
       `- Bonus credited only once per referral\n\n` +
       `<b>Your referral link:</b>\n<code>${referralLink}</code>\n\n` +
       `<b>Total referrals:</b> ${ctx.user.referrals.length}\n` +
@@ -54,7 +54,7 @@ async function checkReferralCompletion(ctx) {
         
         await ctx.reply(
           `🎉 Referral bonus earned!\n` +
-          `User @${referral.username} completed their first task.\n` +
+          `User @${referral.username} joined the required Telegram channel.\n` +
           `+${formatWithUSD(parseInt(process.env.REFERRAL_BONUS))} added to your balance!`
         );
       } else if (!user.referrals[refIndex].completed) {
@@ -66,7 +66,7 @@ async function checkReferralCompletion(ctx) {
         await user.save();
         await ctx.reply(
           `🎉 Referral bonus earned!\n` +
-          `User @${referral.username} completed their first task.\n` +
+          `User @${referral.username} joined the required Telegram channel.\n` +
           `+${formatWithUSD(parseInt(process.env.REFERRAL_BONUS))} added to your balance!`
         );
       }
