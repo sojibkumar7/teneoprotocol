@@ -101,7 +101,7 @@ async function handleWithdraw(ctx) {
       `💸 <b>Withdrawal Confirmation</b>\n\n` +
       `Amount: ${formatWithUSD(user.balance)}\n` +
       `Recipient: <code>${user.walletAddress.trim()}</code>\n` +
-      `Network: BNB Testnet\n\n` +
+      `Network: BNB Mainnet\n\n` +
       `Please confirm this transaction:`,
       Markup.inlineKeyboard([
         [Markup.button.callback('✅ Confirm Withdrawal', 'confirm_withdraw')],
@@ -250,7 +250,7 @@ await ctx.replyWithHTML(
   `✅ <b>Withdrawal Successful!</b>
 
 💰 Amount: ${formatWithUSD(withdrawalAmount)}
-🌐 Network: BNB Testnet
+🌐 Network: BNB Mainnet
 
 🔗 TX Hash:
 <code>${result.txHash}</code>
