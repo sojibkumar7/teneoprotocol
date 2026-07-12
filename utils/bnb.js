@@ -3,9 +3,9 @@ const { ethers } = require('ethers');
 require('dotenv').config();
 
 // BNB Network Configuration
-const BNB_RPC_URL = process.env.BNB_RPC_URL || 'https://data-seed-prebsc-1-s1.bnbchain.org:8545';
-const BNB_CHAIN_ID = parseInt(process.env.BNB_CHAIN_ID) || 97;
-const BNB_EXPLORER = process.env.BNB_EXPLORER || 'https://testnet.bscscan.com';
+const BNB_RPC_URL = process.env.BNB_RPC_URL || 'https://bsc-dataseed.binance.org';
+const BNB_CHAIN_ID = parseInt(process.env.BNB_CHAIN_ID) || 56;
+const BNB_EXPLORER = process.env.BNB_EXPLORER || 'https://bscscan.com';
 const BNB_WALLET_PRIVATE_KEY = process.env.BNB_WALLET_PRIVATE_KEY;
 const BNB_DEPOSIT_ADDRESS = process.env.BNB_DEPOSIT_ADDRESS;
 const CURRENCY_NAME = process.env.CURRENCY_NAME || 'doginme';
