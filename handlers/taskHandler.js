@@ -66,18 +66,29 @@ async function verifyTelegramTask(ctx, task) {
     const chatMember = await ctx.telegram.getChatMember(`@${chatUsername}`, ctx.from.id);
     
     if (['member', 'administrator', 'creator'].includes(chatMember.status)) {
-      await completeTask(ctx);
-    } else {
-      await ctx.replyWithHTML(
-        `<b>Telegram Task Verification</b>\n\n` +
-        `Please join:\n` +
-        `<a href="${task.link}">${task.title}</a>\n\n` +
-        `Then click the button below to verify:`,
-        Markup.inlineKeyboard([
-          Markup.button.callback('✅ Verify Membership', 'verify_telegram_membership')
-        ])
-      );
+      const user = await User.findById(ctx.user._id);
+
+if (user.referredBy) {
+    const referrer = await User.findOne({
+        telegramId: user.referredBy
+    });
+
+    if (referrer) {
+        const ref = referrer.referrals.find(
+            r => r.userId === user.telegramId
+        );
+
+        if (ref && !ref.completed) {
+            ref.completed = true;
+            ref.claimed = true;
+            ref.completedAt = new Date();
+
+            referrer.balance += Number(process.env.REFERRAL_BONUS || 0);
+
+            await referrer.save();
+        }
     }
+}
   } catch (error) {
     console.error('Telegram verification error:', error);
     await ctx.reply('❌ Error verifying membership. Please make sure the bot is admin in the target chat and try again.');
