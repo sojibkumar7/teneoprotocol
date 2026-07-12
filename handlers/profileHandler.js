@@ -63,7 +63,7 @@ async function handleProfileUpdate(ctx) {
       
       if (!isValidBSCAddress(walletAddress)) {
         return await ctx.reply(
-          '⚠️ Please enter a valid BNB Testnet wallet address:\n' +
+          '⚠️ Please enter a valid BNB Mainnet wallet address:\n' +
           '• Should start with 0x\n' +
           '• Should be exactly 42 characters long\n' +
           '• Should be a valid Ethereum-style address\n' +
