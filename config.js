@@ -13,8 +13,8 @@ function getTaskUrls() {
   };
 
   return {
-    TELEGRAM_CHANNEL: process.env.TELEGRAM_CHANNEL,
-    TELEGRAM_GROUP: process.env.TELEGRAM_GROUP,
+    TELEGRAM_CHANNEL_1: process.env.TELEGRAM_CHANNEL_1,
+    TELEGRAM_CHANNEL_2: process.env.TELEGRAM_CHANNEL_2,
     TELEGRAM_CHANNEL_URL: convertToUrl(process.env.TELEGRAM_CHANNEL),
     TELEGRAM_GROUP_URL: convertToUrl(process.env.TELEGRAM_GROUP),
     TWITTER_PROFILE: process.env.TWITTER_PROFILE,
