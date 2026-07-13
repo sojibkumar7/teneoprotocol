@@ -30,59 +30,54 @@ async function showReferral(ctx) {
 
 async function checkReferralCompletion(ctx) {
   try {
-
-    // Get the full user document for updates
     const user = await User.findById(ctx.user._id);
     if (!user) return;
-    
-    const referrals = await User.find({ 
-      referredBy: user.telegramId,
-      completedTasks: { $exists: true, $not: { $size: 0 } }
+
+    const referrals = await User.find({
+      referredBy: user.telegramId
     });
 
+    let updated = false;
+
     for (const referral of referrals) {
-      const refIndex = user.referrals.findIndex(r => r.userId === referral.telegramId);
-      
-      if (refIndex === -1) {
-        user.referrals.push({
-          userId: referral.telegramId,
-          username: referral.username,
-          completed: true,
-          claimed: true,
-          completedAt: new Date(),
-          referredAt: new Date()
-        });
-        
-        await ctx.reply(
-          `🎉 Referral bonus earned!\n` +
-          `User @${referral.username} joined the required Telegram channel.\n` +
-          `+${formatWithUSD(parseInt(process.env.REFERRAL_BONUS))} added to your balance!`
+
+      if (
+        referral.completedTasks &&
+        referral.completedTasks.length > 0
+      ) {
+
+        const refIndex = user.referrals.findIndex(
+          r => r.userId === referral.telegramId
         );
-      } else if (!user.referrals[refIndex].completed) {
-        user.referrals[refIndex].completed = true;
-        user.referrals[refIndex].claimed = true;
-        user.referrals[refIndex].completedAt = new Date();
-        user.balance += parseInt(process.env.REFERRAL_BONUS);
-        
-        await user.save();
-        await ctx.reply(
-          `🎉 Referral bonus earned!\n` +
-          `User @${referral.username} joined the required Telegram channel.\n` +
-          `+${formatWithUSD(parseInt(process.env.REFERRAL_BONUS))} added to your balance!`
-        );
+
+        if (refIndex !== -1 && !user.referrals[refIndex].completed) {
+
+          user.referrals[refIndex].completed = true;
+          user.referrals[refIndex].claimed = true;
+          user.referrals[refIndex].completedAt = new Date();
+
+          user.balance += parseInt(process.env.REFERRAL_BONUS || 0);
+
+          updated = true;
+
+          await ctx.telegram.sendMessage(
+            user.telegramId,
+            `🎉 Referral Bonus Received!\n\n+${formatWithUSD(parseInt(process.env.REFERRAL_BONUS || 0))} has been added to your balance.`
+          );
+        }
       }
     }
-  } catch (error) {
-    console.error('Referral completion check error:', error);
-  }
-}
 
-async function refreshReferral(ctx) {
-  try {
-    // Refresh completion status first
-    await checkReferralCompletion(ctx);
-    
-    // Get updated user data
+    if (updated) {
+      await user.save();
+    }
+
+  } catch (error) {
+    console.error("Referral completion check error:", error);
+  }
+}   
+
+// Get updated user data
     const user = await User.findById(ctx.user._id);
     const referralLink = `https://t.me/${ctx.botInfo.username}?start=${user.telegramId}`;
     const completedCount = user.referrals.filter(ref => ref.completed).length;
