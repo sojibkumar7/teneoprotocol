@@ -1,6 +1,7 @@
 const { Markup } = require('telegraf');
 const Task = require('../models/Task');
 const User = require('../models/User');
+const TelegramCheck = require('../utils/telegramCheck');
 const { formatWithUSD } = require('../utils/helpers');
 const { generateCaptcha } = require('../utils/captcha'); // Follow me @Airdropmanaging
 
