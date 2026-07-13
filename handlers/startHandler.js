@@ -56,23 +56,20 @@ async function showVerificationTasks(ctx) {
     `💬 <a href="https://t.me/airdropunknow">Airdrop Unknow</a>\n` +
     `🐥 <a href="https://x.com/Airdropmanaging">Follow Our Twitter</a>\n\n` +
     `Click the verify buttons after joining:`,
-    Markup.inlineKeyboard([
-      [
-        Markup.button.url('📢 Join Channel', 'https://t.me/Airdropmanaging'),
-        Markup.button.callback('✅ Verify', 'verify_channel_1')
-      ],
-      [
-        Markup.button.url('💬 Join Group', 'https://t.me/Airdropmanaging'),
-        Markup.button.callback('✅ Verify', 'verify_channel_2')
-      ],
-      [
-        Markup.button.url('🐥 Follow Twitter', 'https://x.com/Airdropmanaging'),
-        Markup.button.callback('✅ Verify', 'verify_group')
-      ],
-      [
-        Markup.button.callback('➡️ Continue', 'continue_after_verify')
-      ]
-    ])
+   Markup.inlineKeyboard([
+  [
+    Markup.button.url("📢 Join Channel", "https://t.me/Airdropmanaging")
+  ],
+  [
+    Markup.button.url("👥 Join Group", "https://t.me/Airdropunknown")
+  ],
+  [
+    Markup.button.url("🐦 Follow Twitter", "https://x.com/Airdropmanaging")
+  ],
+  [
+    Markup.button.callback("➡️ Continue", "continue_after_verify")
+  ]
+])
   );
 }
 
