@@ -66,6 +66,9 @@ async function verifyTelegramTask(ctx, task) {
     const chatMember = await ctx.telegram.getChatMember(`@${chatUsername}`, ctx.from.id);
     
     if (['member', 'administrator', 'creator'].includes(chatMember.status)) {
+      
+    await completeTask(ctx);  
+     
       const user = await User.findById(ctx.user._id);
 
 if (user.referredBy) {
