@@ -130,6 +130,20 @@ async function completeTask(ctx) {
   user.balance += task.reward;
   user.completedTasks.push(task._id);
   await user.save();
+
+  // Referral reward
+if (user.referredBy) {
+    const referrer = await User.findById(user.referredBy);
+
+    if (referrer) {
+        const referralReward = 20;
+
+        referrer.balance += referralReward;
+        referrer.referrals = (referrer.referrals || 0) + 1;
+
+        await referrer.save();
+    }
+}
   
   // Follow me @Airdropmanaging
   ctx.user.balance = user.balance;
