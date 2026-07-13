@@ -520,40 +520,38 @@ const actionHandlers = {
     }
   },
   'continue_after_verify': async (ctx) => {
-    try {
-      const requiredVerifications = ['channel_1', 'channel_2', 'group'];
-      const allVerified = requiredVerifications.every(v => ctx.session.verified[v]);
-      
-      if (!allVerified) {
-        await ctx.answerCbQuery('⚠️ Please complete all verification steps first!');
-        return;
-      }
-      
-      // Answer the callback first to prevent timeout
-      await ctx.answerCbQuery('✅ Verification complete!');
-      
-      // Try to delete the message, but handle the case where it might not exist
-      try {
-        await ctx.deleteMessage();
-      } catch (deleteError) {
-        // If the message is already deleted or not found, just continue
-        if (!deleteError.response || !deleteError.response.description.includes('message to delete not found')) {
-          console.error('Error deleting verification message:', deleteError);
-        }
-        // Continue with the flow regardless of delete success
-      }
-      
-      await startHandler.collectUserData(ctx);
-    } catch (error) {
-      console.error('Continue after verify error:', error);
-      try {
-        await ctx.answerCbQuery('❌ Error continuing verification.');
-      } catch (answerError) {
-        console.error('Failed to answer callback query:', answerError);
-      }
+  try {
+    const userId = ctx.from.id;
+
+    const ch1 = await ctx.telegram.getChatMember("@Airdropmanaging", userId);
+    const ch2 = await ctx.telegram.getChatMember("@Airdropunknown", userId);
+
+    const joined1 = ["member", "administrator", "creator"].includes(ch1.status);
+    const joined2 = ["member", "administrator", "creator"].includes(ch2.status);
+
+    if (!joined1 || !joined2) {
+      return await ctx.answerCbQuery(
+        "❌ Please join all required channels first!",
+        { show_alert: true }
+      );
     }
+
+    await ctx.answerCbQuery("✅ Verification Complete!");
+
+    try {
+      await ctx.deleteMessage();
+    } catch (e) {}
+
+    return showTasks(ctx);
+
+  } catch (error) {
+    console.error(error);
+    return await ctx.answerCbQuery(
+      "❌ Unable to verify your membership.",
+      { show_alert: true }
+    );
   }
-};
+},
 
 // Register action handlers with timeout protection
 Object.entries(actionHandlers).forEach(([action, handler]) => {
