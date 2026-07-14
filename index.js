@@ -555,7 +555,7 @@ const actionHandlers = {
 
 // Register action handlers with timeout protection
 Object.entries(actionHandlers).forEach(([action, handler]) => {
-  bot.action(action, createActionHandler(handler));
+    bot.action(action, createActionHandler(handler));
 });
 
 // Task verification handlers with improved error handling
