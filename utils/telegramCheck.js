@@ -50,11 +50,11 @@ class TelegramCheck {
 
     try {
       // Check channel membership
-      const channelUsername = Helpers.extractTelegramUsername(config.TASK_URLS.TELEGRAM_CHANNEL);
+      const channelUsername = Helpers.extractTelegramUsername(config.TASK_URLS.TELEGRAM_CHANNEL_URL);
       if (channelUsername) {
         results.channel = await this.checkMembership(ctx, `@${channelUsername}`, userId);
         if (!results.channel) {
-          results.missing.push(`📢 Telegram Channel: ${config.TASK_URLS.TELEGRAM_CHANNEL}`);
+          results.missing.push(`📢 Telegram Channel: ${config.config.TASK_URLS.TELEGRAM_GROUP_URL}`);
         }
       } else {
         console.error('Invalid channel URL:', config.TASK_URLS.TELEGRAM_CHANNEL);
