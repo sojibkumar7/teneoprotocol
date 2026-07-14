@@ -131,17 +131,21 @@ async function completeTask(ctx) {
   if (user.completedTasks.length === 1 && user.referredBy) {
     const referrer = await User.findOne({ telegramId: user.referredBy });
     if (referrer) {
-      referrer.referrals.push({ 
-        userId: user.telegramId, // Follow me @MetaCoderJack
+
+    const referralReward = parseInt(process.env.REFERRAL_BONUS) || 20;
+    referrer.balance += referralReward;
+
+    referrer.referrals.push({
+        userId: user.telegramId,
         username: user.username,
         completed: true,
         claimed: true,
         completedAt: new Date(),
         referredAt: new Date()
-      });
-      await referrer.save();
-    }
-  }
+    });
+
+    await referrer.save();
+}
   
   // Follow me @MetaCoderJack
   
