@@ -551,7 +551,7 @@ const actionHandlers = {
       { show_alert: true }
     );
   }
-},
+};
 
 // Register action handlers with timeout protection
 Object.entries(actionHandlers).forEach(([action, handler]) => {
