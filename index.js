@@ -540,18 +540,15 @@ const actionHandlers = {
 
     try {
       await ctx.deleteMessage();
-    } catch (e) {}
-
-    return showTasks(ctx);
-
-  } catch (error) {
+      } catch (error) {
     console.error(error);
     return await ctx.answerCbQuery(
       "❌ Unable to verify your membership.",
       { show_alert: true }
     );
   }
-},
+}
+};
 
 // Register action handlers with timeout protection
 Object.entries(actionHandlers).forEach(([action, handler]) => {
