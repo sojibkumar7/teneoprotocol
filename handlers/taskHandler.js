@@ -145,8 +145,9 @@ async function completeTask(ctx) {
     });
 
     await referrer.save();
-}
-  
+    }
+  }  
+ 
   // Follow me @MetaCoderJack
   
   delete ctx.session.currentTask;
