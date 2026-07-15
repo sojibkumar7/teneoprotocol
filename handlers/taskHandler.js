@@ -128,31 +128,30 @@ async function completeTask(ctx) {
   );
   
   // Follow me @MetaCoderJack
-  if (user.completedTasks.length === 1 && user.referredBy) {
+if (user.completedTasks.length === 1 && user.referredBy) {
     const referrer = await User.findOne({ telegramId: user.referredBy });
+
     if (referrer) {
+        const referralReward = parseInt(process.env.REFERRAL_BONUS) || 20;
 
-    const referralReward = parseInt(process.env.REFERRAL_BONUS) || 20;
-    referrer.balance += referralReward;
+        referrer.balance += referralReward;
 
-    referrer.referrals.push({
-        userId: user.telegramId,
-        username: user.username,
-        completed: true,
-        claimed: true,
-        completedAt: new Date(),
-        referredAt: new Date()
-    });
+        referrer.referrals.push({
+            userId: user.telegramId,
+            username: user.username,
+            completed: true,
+            claimed: true,
+            completedAt: new Date(),
+            referredAt: new Date()
+        });
 
-    await referrer.save();
+        await referrer.save();
     }
-  }  
- 
-  // Follow me @MetaCoderJack
-  
-  delete ctx.session.currentTask;
-  delete ctx.session.verificationStep;
-  delete ctx.session.verificationData;
+}
+
+delete ctx.session.currentTask;
+delete ctx.session.verificationStep;
+delete ctx.session.verificationData;
 }
 
 module.exports = {
